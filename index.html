@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Vaikutuspulssi – Sosped Keskuksen koosteet vaikuttavuussijoittamisesta.">
+<title>Vaikutuspulssi</title>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap">
+<style>
+  :root{
+    color-scheme:light;
+    --paper:#F3F4F7;
+    --paper-raised:#FFFFFF;
+    --text:#2B1B27;
+    --text-muted:#675C66;
+    --rule:#E3E3EA;
+    --plum:#522C4A;
+    --lilac:#BCCCFC;
+    --peri:#8EA3EE;
+    --on-plum:#FFFFFF;
+    --accent-econ:#522C4A;
+    --accent-econ-soft:#F2EDF1;
+    --accent-fin:#4E62B5;
+    --accent-fin-soft:#E6ECFE;
+    --accent-gov:#7A5A74;
+    --accent-gov-soft:#EEF2FE;
+    --shadow:0 1px 2px rgba(43,27,39,.06);
+    --display:"Montserrat","Segoe UI",Arial,sans-serif;
+    --body:"Lato","Segoe UI",system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme:dark;
+      --paper:#1A1118; --paper-raised:#251A23; --text:#F3F4F7; --text-muted:#BDB3BB; --rule:#3B2D38;
+      --plum:#3E2138; --accent-econ:#E2C4DA; --accent-econ-soft:#3A2535;
+      --accent-fin:#BCCCFC; --accent-fin-soft:#232B4A; --accent-gov:#D3B6CC; --accent-gov-soft:#2C2433;
+      --shadow:0 1px 0 rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --paper:#1A1118; --paper-raised:#251A23; --text:#F3F4F7; --text-muted:#BDB3BB; --rule:#3B2D38;
+    --plum:#3E2138; --accent-econ:#E2C4DA; --accent-econ-soft:#3A2535;
+    --accent-fin:#BCCCFC; --accent-fin-soft:#232B4A; --accent-gov:#D3B6CC; --accent-gov-soft:#2C2433;
+    --shadow:0 1px 0 rgba(0,0,0,.3);
+  }
+
+  *{box-sizing:border-box;}
+  body{background:var(--paper); color:var(--text); margin:0; font-family:var(--body); line-height:1.55;}
+
+  /* Sosped hero: plum band, lilac/plum splash, white logo */
+  .hero{position:relative; overflow:hidden; background:var(--plum); color:var(--on-plum);}
+  .hero-in{position:relative; z-index:1; max-width:820px; margin:0 auto; padding:36px 20px 44px;}
+  .hero .logo{display:block; width:132px; height:auto; margin-bottom:34px;}
+  .hero .logo use{fill:#FFFFFF;}
+  .blob{position:absolute; right:0; top:0; width:min(300px,42vw); height:auto; pointer-events:none;}
+  .blob .bl{fill:var(--lilac);} .blob .bp{fill:var(--peri); opacity:.55;}
+  .hero .eyebrow{color:var(--on-plum); opacity:.85;}
+  .hero h1{color:var(--on-plum);}
+  .hero .tagline{color:var(--on-plum); opacity:.88; margin-bottom:0;}
+
+  .wrap{max-width:820px; margin:0 auto; padding:32px 20px 64px;}
+
+  .eyebrow{font-family:var(--body); font-weight:700; font-size:12.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--text-muted); margin:0 0 14px;}
+  h1{font-family:var(--display); font-weight:800; font-size:clamp(2.2rem,6vw,3.4rem); line-height:1.05; letter-spacing:-.01em; margin:0 0 14px; text-wrap:balance;}
+  .tagline{font-size:1.08rem; color:var(--text-muted); max-width:58ch; margin:0 0 28px;}
+
+  .stats{display:flex; flex-wrap:wrap; background:var(--paper-raised); border:1px solid var(--rule); border-radius:6px; margin-bottom:28px; box-shadow:var(--shadow);}
+  .stat{flex:1 1 110px; padding:14px 18px; border-left:1px solid var(--rule);}
+  .stat:first-child{border-left:none;}
+  .stat .n{font-family:var(--display); font-variant-numeric:tabular-nums; font-size:1.45rem; font-weight:800; color:var(--accent-econ); display:block;}
+  .stat .l{display:block; line-height:1.35; font-size:11.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em;}
+
+  .filters{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px;}
+  .filter-btn{font-family:var(--display); font-weight:600; font-size:13px; background:var(--paper-raised); border:1.5px solid var(--rule); color:var(--text); padding:8px 16px; border-radius:24px; cursor:pointer;}
+  .filter-btn:hover{border-color:var(--peri);}
+  .filter-btn[aria-pressed="true"]{color:#FFFFFF; background:#522C4A; border-color:#522C4A;}
+  .filter-btn:focus-visible{outline:2px solid var(--peri); outline-offset:2px;}
+  .filter-hint{font-size:13px; color:var(--text-muted); margin:0 0 36px;}
+
+  .theme-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; border-bottom:3px solid currentColor; padding-bottom:8px; margin-bottom:8px;}
+  h2{font-family:var(--display); font-weight:700; font-size:1.4rem; margin:0; letter-spacing:-.005em;}
+  .theme-count{font-size:12.5px; font-weight:700; color:var(--text-muted); white-space:nowrap;}
+  .section-note{font-size:14.5px; color:var(--text-muted); margin:0 0 20px; max-width:60ch;}
+  section[data-theme]{margin-bottom:46px;}
+  section[data-theme="econ"] .theme-head{color:var(--accent-econ);}
+  section[data-theme="fin"] .theme-head{color:var(--accent-fin);}
+  section[data-theme="gov"] .theme-head{color:var(--accent-gov);}
+
+  .spectrum{margin:18px 0 28px; padding:16px 18px; background:var(--paper-raised); border:1px solid var(--rule); border-radius:6px;}
+  .spectrum-label{font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); margin:0 0 10px;}
+  .bar{display:flex; border-radius:3px; overflow:hidden; height:10px;}
+  .bar span{flex:1;}
+  .bar .b1{background:var(--lilac); opacity:.45;}
+  .bar .b2{background:var(--lilac);}
+  .bar .b3{background:var(--peri);}
+  .bar .b4{background:#522C4A;}
+  .bar-labels{display:grid; grid-template-columns:repeat(4,1fr); font-size:12px; color:var(--text-muted); margin-top:6px; gap:4px;}
+  .bar-labels span:nth-child(3), .bar-labels span:last-child{text-align:right;}
+  .spectrum-note{font-size:13px; color:var(--text-muted); margin:10px 0 0; max-width:64ch;}
+
+  .card{background:var(--paper-raised); border:1px solid var(--rule); border-radius:6px; padding:18px 20px; margin-bottom:14px; box-shadow:var(--shadow);}
+  .card-top{display:flex; justify-content:space-between; align-items:baseline; gap:12px; font-size:11.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;}
+  .card-top .date{font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .card h3{font-family:var(--display); font-weight:700; font-size:1.08rem; line-height:1.3; margin:0 0 8px;}
+  .card h3 a{color:var(--text); text-decoration:none; border-bottom:1.5px solid var(--lilac);}
+  .card h3 a:hover{border-bottom-color:var(--peri);}
+  .card p{margin:0 0 12px; font-size:15px; color:var(--text);}
+  .card-bottom{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+  .tag{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:4px 10px; border-radius:20px;}
+  .tag.econ{background:var(--accent-econ-soft); color:var(--accent-econ);}
+  .tag.fin{background:var(--accent-fin-soft); color:var(--accent-fin);}
+  .tag.gov{background:var(--accent-gov-soft); color:var(--accent-gov);}
+  .read{font-size:13.5px; font-weight:700; color:var(--accent-fin); text-decoration:none; white-space:nowrap;}
+  .read:hover{text-decoration:underline;}
+
+  footer{border-top:1px solid var(--rule); padding-top:28px;}
+  .sources{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px 20px; margin:16px 0 24px;}
+  .source-item{font-size:13.5px;}
+  .source-item a{font-family:var(--display); font-weight:600; font-size:13px; color:var(--text); text-decoration:none; border-bottom:1.5px solid var(--lilac);}
+  .source-item a:hover{border-bottom-color:var(--peri);}
+  .source-item .d{color:var(--text-muted); display:block; margin-top:2px;}
+  .proto-note{font-size:13px; color:var(--text-muted); max-width:66ch; padding:14px 16px; background:var(--paper-raised); border:1px solid var(--rule); border-radius:6px; margin-bottom:14px;}
+  .proto-note.flag{border-color:var(--peri); background:var(--accent-fin-soft); color:var(--text);}
+
+  @media (max-width:480px){
+    .stat{flex:1 1 45%; border-left:none; border-top:1px solid var(--rule);}
+    .stat:first-child, .stat:nth-child(2){border-top:none;}
+    .hero .logo{width:104px; margin-bottom:24px;}
+  }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><path id="g-logo" d="M705.7 510.9C701.3 508.3 701.0 505.5 701.0 459.5C701.0 411.8 701.2 409.7 706.5 408.4C710.8 407.3 719.9 408.5 721.8 410.4C723.2 411.7 723.6 414.8 724.0 427.6C724.5 441.7 724.7 443.3 726.5 444.6C728.3 446.0 728.7 445.9 730.7 443.3C732.0 441.8 733.0 440.0 733.0 439.4C733.0 438.9 733.8 437.5 734.8 436.4C736.6 434.5 742.6 425.8 746.6 419.3C747.8 417.4 750.5 414.1 752.6 411.9L756.5 407.9L767.2 408.2C773.0 408.4 778.2 408.8 778.5 409.2C779.5 410.1 775.1 419.0 772.5 421.5C771.3 422.6 768.9 425.5 767.2 428.0C765.5 430.5 762.0 435.0 759.5 438.0C757.1 441.0 753.9 445.6 752.6 448.1L750.1 452.7L752.5 457.7C753.9 460.4 756.4 465.0 758.2 467.7C760.0 470.5 762.9 475.1 764.5 478.0C769.1 485.9 775.6 496.2 777.9 499.2C779.3 501.0 780.0 503.3 780.0 506.3L780.0 510.8L771.8 511.2C761.3 511.6 756.9 509.6 753.2 503.0C751.9 500.5 750.2 497.8 749.5 497.0C748.8 496.2 747.3 493.5 746.1 491.0C738.1 474.7 736.6 472.5 732.8 471.6C725.9 469.9 724.0 474.2 724.0 491.8C724.0 506.2 722.8 509.6 717.3 510.5C708.7 511.8 707.4 511.9 705.7 510.9ZM798.4 510.7C797.6 510.3 796.3 508.6 795.5 506.9C794.2 504.4 793.9 497.6 793.9 460.4C793.9 436.5 794.2 415.3 794.6 413.4C794.9 411.5 796.1 409.5 797.1 409.0C799.5 407.7 849.6 407.7 852.0 409.0C856.4 411.4 856.9 423.9 852.7 426.2C851.4 426.9 845.2 427.2 836.2 427.1C817.3 426.8 817.0 427.0 817.0 438.0C817.0 449.1 816.8 449.0 834.9 449.0C852.9 449.0 853.5 449.3 853.5 457.7C853.5 461.7 852.9 464.5 851.7 466.3L849.9 469.1L835.2 468.9C817.2 468.8 817.0 468.9 817.0 481.0C817.0 492.1 816.8 492.0 837.1 492.0C857.0 492.0 858.4 492.5 858.8 499.2C859.2 505.6 857.0 509.7 852.7 510.5C847.4 511.4 800.0 511.6 798.4 510.7ZM884.5 511.1C880.1 510.0 875.8 507.5 873.4 504.8C871.5 502.7 871.4 502.2 872.7 498.0C873.4 495.5 874.8 492.5 875.8 491.3C877.5 489.1 877.6 489.1 882.5 490.6C885.2 491.4 891.6 492.4 896.6 492.7C904.3 493.2 906.3 493.0 910.2 491.2C915.8 488.7 918.1 484.0 915.9 478.8C914.7 475.8 907.8 470.0 905.5 470.0C902.5 470.0 886.0 461.3 881.3 457.2C873.5 450.4 870.9 441.7 873.5 430.3C875.5 421.6 880.6 415.9 890.6 410.9C897.5 407.5 897.6 407.5 911.5 407.5C927.7 407.5 930.7 408.4 933.7 413.8C935.7 417.4 935.7 417.6 933.9 421.5C931.4 427.1 928.7 429.1 925.0 428.0C918.8 426.2 909.0 425.8 904.2 427.0C897.3 428.9 895.8 430.5 896.2 435.9C896.5 440.1 896.9 440.6 902.0 444.2C905.0 446.3 909.8 448.7 912.6 449.5C915.4 450.3 920.4 452.6 923.6 454.5C935.7 461.8 940.0 468.5 940.0 480.2C940.0 489.9 938.4 494.2 932.5 500.4C929.6 503.5 926.7 506.0 926.1 506.0C925.5 506.0 922.6 507.2 919.7 508.7C914.9 511.1 913.4 511.4 901.0 511.6C893.6 511.8 886.1 511.5 884.5 511.1ZM1016.1 509.4C1012.1 506.9 1007.3 499.5 995.5 477.2C992.6 471.8 992.3 471.5 988.2 471.2C984.2 470.9 983.9 471.1 982.6 474.2C981.7 476.3 981.0 483.0 980.7 491.8C980.0 510.7 979.7 511.2 969.2 510.8C957.3 510.3 957.9 513.4 958.2 457.9C958.5 404.4 957.8 408.0 969.0 408.0C972.8 408.0 976.4 408.5 977.4 409.3C979.9 411.1 980.7 416.1 980.9 429.9C981.0 441.7 982.1 447.0 984.5 447.0C985.1 447.0 986.2 445.8 986.9 444.2C987.6 442.7 989.5 439.7 991.1 437.5C995.8 431.1 998.7 426.9 1001.8 421.8C1003.4 419.1 1006.6 415.0 1008.9 412.5L1013.1 408.0L1022.6 408.0C1027.9 408.0 1033.0 408.5 1034.1 409.0C1035.9 410.0 1035.9 410.2 1033.5 414.9C1032.2 417.6 1029.4 421.8 1027.3 424.3C1025.2 426.7 1021.9 430.9 1020.0 433.5C1018.1 436.1 1015.1 439.8 1013.4 441.8C1011.6 443.9 1009.6 447.1 1008.8 449.0C1006.7 454.1 1007.8 456.6 1020.2 475.9C1022.3 479.1 1024.0 482.1 1024.0 482.5C1024.0 483.0 1025.1 484.7 1026.4 486.4C1027.6 488.1 1029.5 491.1 1030.5 493.0C1031.5 494.9 1033.3 497.8 1034.6 499.3C1037.2 502.4 1037.9 509.3 1035.9 510.6C1035.2 511.0 1031.4 511.3 1027.2 511.4C1021.2 511.5 1019.0 511.1 1016.1 509.4ZM1078.5 511.2C1063.6 505.8 1054.2 495.5 1052.1 482.0C1050.5 471.9 1050.6 414.6 1052.2 411.2C1053.4 408.7 1054.0 408.5 1061.0 408.2C1073.3 407.7 1072.4 405.0 1073.1 444.7C1073.5 465.7 1074.1 479.4 1074.8 481.0C1075.4 482.4 1077.6 485.5 1079.8 487.9C1083.6 492.3 1083.9 492.4 1090.5 492.8C1098.7 493.3 1102.6 491.7 1106.5 486.0C1110.0 480.9 1111.0 471.3 1111.0 440.0C1111.0 426.0 1111.3 413.5 1111.6 412.3C1112.3 409.6 1116.7 408.0 1123.4 408.0C1134.5 408.0 1135.4 410.9 1134.7 446.1C1134.3 468.6 1133.9 473.8 1132.1 481.4C1129.6 491.7 1129.0 492.9 1123.6 499.4C1120.7 502.8 1117.3 505.3 1112.0 507.9C1104.8 511.4 1104.1 511.5 1092.5 511.7C1085.9 511.8 1079.6 511.6 1078.5 511.2ZM1164.5 511.1C1159.0 509.5 1153.2 506.0 1152.5 503.9C1151.8 501.7 1152.6 495.6 1154.1 492.9C1155.4 490.4 1160.2 489.9 1168.2 491.6C1176.9 493.5 1188.8 493.0 1192.3 490.8C1193.6 489.9 1195.2 487.4 1195.8 485.2C1196.9 481.6 1196.8 480.8 1194.5 476.8C1192.5 473.1 1191.2 472.1 1186.8 470.6C1183.9 469.6 1180.1 467.9 1178.4 466.9C1176.7 465.8 1173.4 464.3 1171.1 463.5C1166.3 461.8 1160.3 456.5 1155.7 450.0C1152.9 445.9 1152.6 444.8 1152.6 437.5C1152.5 429.6 1152.6 429.3 1157.0 422.6C1161.0 416.5 1162.3 415.4 1169.5 411.6L1177.5 407.5L1191.5 407.5C1208.1 407.5 1212.1 408.5 1214.4 413.4C1216.0 416.8 1215.8 421.5 1213.8 425.2C1212.6 427.7 1206.8 428.4 1199.8 427.0C1191.8 425.5 1183.2 426.5 1179.8 429.3C1178.3 430.6 1176.9 433.0 1176.6 435.1C1176.0 438.7 1176.2 439.0 1181.7 443.3C1185.3 446.2 1189.2 448.3 1192.2 449.1C1194.9 449.7 1198.5 451.2 1200.3 452.4C1202.0 453.5 1204.8 455.2 1206.4 456.0C1210.9 458.3 1215.7 463.5 1218.6 469.3C1222.4 476.8 1222.4 485.7 1218.5 492.6C1214.1 500.2 1210.1 503.9 1202.0 507.8C1194.7 511.3 1194.2 511.4 1181.0 511.6C1173.6 511.8 1166.2 511.5 1164.5 511.1ZM600.1 434.2L598.0 432.5L598.2 272.3C598.4 142.3 598.7 111.9 599.8 110.8C600.8 109.8 609.8 109.5 642.3 109.5C680.6 109.5 684.2 109.7 694.0 111.7C699.8 112.9 708.1 114.4 712.5 115.0C716.9 115.7 723.0 117.2 726.0 118.5C729.0 119.7 733.8 121.5 736.6 122.4C739.4 123.3 743.2 125.2 745.0 126.5C746.9 127.9 748.9 129.0 749.6 129.0C752.4 129.0 769.3 143.9 775.4 151.8C781.3 159.6 789.9 174.8 790.0 177.8C790.0 178.5 791.2 181.4 792.6 184.1C795.6 190.0 800.0 217.4 800.0 230.0C800.0 242.1 795.5 270.2 792.6 276.7C791.1 279.7 790.0 282.8 790.0 283.5C790.0 284.1 788.8 286.9 787.4 289.6C786.0 292.3 783.9 296.3 782.8 298.5C780.7 302.5 779.2 304.5 771.0 314.4C763.7 323.1 753.0 331.9 744.8 336.1C742.4 337.3 739.8 338.8 739.0 339.5C738.2 340.3 734.4 341.7 730.5 342.8C726.6 343.9 721.9 345.4 719.9 346.3C712.9 349.2 691.7 351.7 663.0 353.0C644.7 353.8 643.4 354.0 641.8 356.0C640.1 358.0 640.0 361.2 640.0 394.9C640.0 426.5 639.8 431.9 638.4 433.8C636.9 435.9 636.3 436.0 619.6 436.0C604.5 436.0 601.9 435.8 600.1 434.2ZM65.5 353.3C63.9 353.1 53.7 351.8 43.0 350.5C23.7 348.1 13.8 345.6 9.7 342.1C8.0 340.7 7.9 339.0 8.2 322.8C8.4 310.6 8.9 304.7 9.7 303.9C10.7 302.9 12.1 303.0 16.2 304.4C19.1 305.3 25.9 306.8 31.4 307.6C36.8 308.4 44.5 309.8 48.4 310.7C53.0 311.7 60.7 312.3 70.5 312.3C84.6 312.3 86.1 312.2 96.5 309.1C114.3 303.7 125.1 294.4 129.0 280.7C130.2 276.7 131.5 272.2 132.1 270.6C133.7 265.7 133.1 258.2 130.4 248.1C127.3 236.9 127.2 236.5 121.5 229.1C114.8 220.5 107.5 213.6 94.5 204.0C91.9 202.1 88.1 199.0 86.0 197.2C84.0 195.5 81.9 194.0 81.4 194.0C80.9 194.0 78.9 192.7 77.0 191.2C75.1 189.6 71.6 187.3 69.2 186.0C66.9 184.7 65.0 183.3 65.0 183.0C65.0 182.6 62.9 180.9 60.3 179.2C57.6 177.5 53.6 174.6 51.3 172.8C49.1 171.0 44.8 167.6 41.8 165.4C34.2 159.5 18.5 142.7 15.4 137.2C13.9 134.6 11.9 131.2 10.8 129.7C9.8 128.2 7.3 121.7 5.4 115.2C2.3 104.4 2.0 102.5 2.0 90.0C2.0 77.6 2.3 75.5 5.4 65.0C8.8 53.2 14.3 41.7 18.9 36.7C29.4 25.1 37.2 18.6 44.5 15.2C47.2 13.9 50.2 12.3 51.0 11.5C51.8 10.8 56.1 9.2 60.6 8.1C65.0 7.0 70.4 5.3 72.6 4.3C76.0 2.7 79.8 2.5 104.0 2.5C129.3 2.5 132.1 2.7 139.0 4.7C143.1 5.9 150.2 7.6 154.8 8.4C164.2 10.2 165.5 10.7 169.0 14.5C171.5 17.1 171.5 17.4 171.5 34.4C171.5 49.2 171.3 52.0 169.7 54.3L167.9 57.0L163.7 54.8C161.4 53.6 155.4 51.6 150.5 50.4C145.6 49.1 139.0 47.3 136.0 46.4C131.5 45.0 126.2 44.7 107.0 44.6L83.5 44.5L74.7 48.8C67.0 52.5 57.0 60.1 57.0 62.2C57.0 62.5 55.7 65.0 54.0 67.7C48.5 76.6 47.4 98.8 52.0 108.4C57.0 119.0 65.8 129.2 78.7 139.3C81.3 141.4 85.5 144.7 88.0 146.7C90.5 148.6 94.0 151.0 95.8 151.8C97.5 152.7 99.0 153.7 99.0 154.1C99.0 154.5 101.4 156.2 104.2 157.9C114.2 163.9 121.7 169.4 135.5 181.2C155.1 197.9 166.2 211.7 173.2 228.0C178.1 239.4 179.3 246.7 179.4 264.5C179.4 281.0 177.9 292.3 175.0 298.5C174.0 300.7 172.0 305.0 170.6 308.0C169.1 311.0 166.9 315.1 165.5 317.0C161.2 322.9 149.9 334.0 146.0 336.0C144.0 337.0 141.8 338.5 141.1 339.3C140.5 340.1 138.5 341.3 136.7 342.0C134.9 342.7 130.8 344.5 127.5 346.1C116.5 351.2 81.2 355.3 65.5 353.3ZM277.0 351.4C264.5 349.1 261.8 348.3 256.5 345.2C255.4 344.6 252.5 343.2 250.0 342.0C234.4 334.9 216.1 315.7 208.0 298.0C201.8 284.6 200.0 280.2 199.4 277.0C199.1 275.1 197.6 268.8 196.2 263.0C193.8 253.4 193.6 250.8 193.5 232.0C193.5 212.9 193.7 210.7 196.4 200.0C203.8 169.8 210.9 155.2 226.5 138.2C232.0 132.2 240.0 125.8 246.3 122.2C248.6 120.9 251.2 119.2 252.0 118.5C253.4 117.2 265.6 112.7 275.5 109.8C278.0 109.0 286.8 108.6 299.0 108.6C316.7 108.6 319.1 108.8 324.5 110.9C327.8 112.1 332.6 113.7 335.3 114.5C337.9 115.2 341.5 116.8 343.3 117.9C345.0 119.0 348.1 120.8 350.0 121.7C356.1 124.8 368.1 135.2 374.7 143.2C381.9 152.0 389.0 163.5 391.1 169.7C391.7 171.8 393.3 175.6 394.6 178.1C396.8 182.5 400.8 201.3 403.1 218.0C403.7 222.1 404.0 230.0 403.7 235.5C403.1 247.9 397.5 275.9 394.5 282.0C393.3 284.5 391.9 287.9 391.6 289.7C391.2 291.5 389.8 294.5 388.4 296.5C387.1 298.5 385.3 301.4 384.4 303.1C382.2 307.4 374.6 317.7 370.0 322.5C356.8 336.4 337.6 347.4 320.0 351.0C303.8 354.3 293.0 354.4 277.0 351.4ZM460.5 351.5C450.1 350.2 439.0 348.6 436.0 347.9C430.2 346.7 422.7 342.2 421.6 339.5C420.8 337.3 420.9 319.5 421.8 314.5C422.4 311.2 423.0 310.4 425.8 309.6C428.4 308.9 430.0 309.1 433.8 310.9C444.2 315.7 482.6 318.5 499.5 315.6C511.5 313.5 514.1 312.4 520.7 306.2C526.3 301.1 527.8 297.6 528.7 287.4C529.1 282.7 528.7 279.5 527.2 274.4C523.9 263.6 516.5 257.6 493.5 246.6C488.0 244.0 482.1 241.1 480.5 240.3C478.9 239.4 476.1 238.1 474.5 237.3C471.4 235.9 467.0 233.6 458.5 229.0C455.8 227.5 451.2 224.8 448.5 222.9C441.1 217.7 438.5 215.4 431.1 207.5C430.1 206.4 427.3 201.7 424.9 197.0L420.5 188.5L420.5 172.4L420.5 156.4L424.4 147.9C428.2 139.8 432.4 133.6 436.4 130.1C437.4 129.2 439.4 127.3 440.8 125.8C442.2 124.2 443.8 123.0 444.4 123.0C445.1 123.0 448.0 121.5 450.9 119.6C453.8 117.7 458.5 115.6 461.3 114.9C464.2 114.3 468.8 112.8 471.5 111.6C476.2 109.6 478.2 109.5 502.0 109.5C524.8 109.6 528.3 109.8 535.5 111.7C539.9 112.9 547.1 114.4 551.5 115.0C561.3 116.5 562.5 117.1 565.0 122.0C566.6 125.2 567.0 127.9 567.0 136.4C567.0 142.1 566.7 147.6 566.4 148.5C566.0 149.3 564.4 150.8 562.8 151.6C560.4 152.9 558.9 153.0 555.2 152.1C552.6 151.5 546.7 150.4 542.0 149.6C537.3 148.8 530.1 147.4 526.0 146.5C520.6 145.3 514.6 145.0 504.5 145.2C491.2 145.5 490.1 145.7 482.2 148.9C475.8 151.5 473.0 153.3 469.9 156.9C463.7 163.9 462.7 166.4 462.7 175.3C462.7 182.6 463.0 183.4 466.1 187.8C470.4 193.8 475.1 197.9 480.8 200.7C483.3 202.0 486.0 203.6 487.0 204.5C487.9 205.3 490.6 206.6 492.9 207.5C495.3 208.3 498.7 209.9 500.5 211.0C502.3 212.1 506.4 213.9 509.6 215.0C512.8 216.1 516.1 217.7 516.9 218.4C517.8 219.2 521.1 220.8 524.2 222.0C527.4 223.2 530.2 224.6 530.5 225.1C530.9 225.6 532.9 226.9 535.0 228.0C539.6 230.3 547.7 236.1 553.3 241.0C560.5 247.3 567.3 257.8 571.0 268.0C574.0 276.4 574.4 278.6 574.3 287.5C574.3 296.3 573.9 298.8 570.7 308.3C566.5 320.7 565.3 322.6 555.1 332.7C544.4 343.4 534.3 348.0 514.4 351.5C496.3 354.6 486.1 354.6 460.5 351.5ZM826.2 352.0C825.2 351.2 823.9 349.8 823.2 348.9C822.2 347.6 822.0 321.8 822.0 232.2C822.0 169.0 822.3 115.9 822.6 114.2C823.0 112.4 824.1 110.8 825.6 110.1C829.1 108.5 990.9 108.5 994.4 110.1C997.6 111.6 998.0 114.1 998.0 132.6C998.0 147.1 997.9 148.0 995.8 150.0C993.7 152.0 992.6 152.0 931.7 152.0C891.2 152.0 869.2 152.4 867.9 153.0C863.5 155.4 863.0 158.6 863.0 182.4L863.0 204.8L866.1 207.4C867.8 208.8 869.7 210.0 870.3 210.0C871.0 210.0 897.3 210.0 928.8 210.0C981.2 210.0 986.4 210.1 989.0 211.7C993.5 214.3 994.2 217.4 993.8 232.4C993.6 243.8 993.2 246.2 991.7 247.7C990.1 249.4 985.7 249.5 928.7 250.0C876.7 250.4 867.2 250.7 865.2 252.0C863.0 253.5 863.0 253.7 863.0 278.7C863.0 306.0 863.0 305.9 868.8 308.1C870.2 308.6 896.8 309.0 931.9 309.0C965.3 309.0 993.4 309.2 994.3 309.6C997.1 310.6 998.0 316.0 998.0 332.1L998.0 347.9L995.2 350.5L992.5 353.1L910.2 353.3C838.4 353.5 827.8 353.3 826.2 352.0ZM1031.8 352.2C1030.9 351.3 1029.7 349.5 1029.1 348.3C1027.7 345.6 1027.6 121.6 1029.0 115.5C1030.6 108.5 1028.9 108.7 1074.0 109.4C1097.3 109.7 1116.6 110.4 1119.5 111.0C1122.2 111.6 1130.9 113.2 1138.8 114.5C1146.6 115.8 1154.5 117.6 1156.3 118.5C1158.0 119.4 1162.2 121.0 1165.5 122.1C1168.8 123.1 1173.5 125.3 1175.9 127.0C1178.3 128.6 1180.9 130.0 1181.6 130.0C1184.5 130.0 1204.3 149.6 1209.8 157.9C1215.9 167.2 1221.0 178.0 1223.6 187.0C1225.0 191.7 1226.8 198.0 1227.8 201.0C1230.2 209.2 1230.1 252.0 1227.6 260.0C1226.6 263.0 1225.0 268.9 1223.9 273.0C1221.9 280.5 1215.8 293.8 1209.7 303.7C1205.4 310.7 1192.7 324.5 1187.6 327.8C1185.4 329.2 1182.0 331.7 1180.2 333.2C1178.4 334.7 1176.3 336.0 1175.6 336.0C1174.9 336.0 1173.1 336.9 1171.7 338.0C1170.3 339.2 1163.1 342.0 1155.8 344.4C1145.3 347.9 1139.4 349.1 1128.0 350.4C1104.8 353.0 1086.3 354.0 1058.9 354.0C1035.8 354.0 1033.2 353.8 1031.8 352.2ZM1110.7 314.9C1118.5 314.4 1127.1 313.3 1129.7 312.6C1137.9 310.3 1149.7 305.4 1153.2 302.9C1157.6 299.6 1173.0 283.9 1173.0 282.5C1173.0 281.9 1174.2 279.8 1175.6 277.7C1179.2 272.3 1184.9 254.1 1186.1 244.0C1187.8 230.3 1186.5 213.3 1182.9 201.5C1179.4 190.2 1178.3 187.7 1173.7 180.3C1167.9 171.1 1154.9 160.3 1145.6 157.0C1142.8 156.0 1139.1 154.4 1137.3 153.5C1132.9 151.3 1103.2 147.2 1088.2 146.8L1075.8 146.5L1072.9 149.8L1070.0 153.0L1070.2 232.7L1070.5 312.4L1073.7 314.6C1077.3 317.0 1081.7 317.0 1110.7 314.9ZM692.0 313.9C696.7 313.3 701.6 312.2 703.0 311.5C704.4 310.8 708.2 309.3 711.6 308.2C721.9 304.8 733.8 295.4 741.1 284.8C747.0 276.0 752.7 262.6 754.1 253.5C754.8 249.1 755.4 238.8 755.4 230.5C755.4 211.1 753.9 201.8 748.8 190.6C744.3 180.4 742.6 177.8 735.3 170.7C728.9 164.3 723.0 160.1 716.5 157.4C713.8 156.3 709.7 154.5 707.5 153.5C700.0 150.1 658.7 145.2 648.2 146.5C639.4 147.6 640.0 141.5 640.0 232.2C640.0 304.5 640.1 311.8 641.7 313.9L643.3 316.3L663.4 315.7C674.5 315.4 687.3 314.6 692.0 313.9ZM322.3 309.5C334.9 302.9 343.4 294.2 350.1 280.8C353.8 273.4 355.3 268.8 356.5 261.8C357.4 256.7 358.5 250.8 359.1 248.8C362.4 236.1 358.1 201.2 351.4 187.3C349.5 183.4 348.0 179.7 348.0 179.2C348.0 178.1 343.2 171.8 337.3 165.2C331.4 158.6 320.9 152.0 311.9 149.4C297.8 145.3 295.1 145.3 279.9 149.7C272.1 152.0 269.1 154.0 259.4 163.7C247.6 175.4 241.7 189.5 237.0 217.0C235.8 223.7 235.8 242.8 237.0 249.0C239.0 259.7 243.9 277.1 245.7 279.7C246.7 281.2 248.2 283.8 248.9 285.4C249.6 287.0 251.3 289.9 252.8 291.8C256.7 296.7 267.2 307.0 268.4 307.0C268.9 307.0 271.5 308.4 274.1 310.0C280.4 314.1 285.2 315.0 300.3 314.6L313.1 314.3L322.3 309.5Z"/><path id="g-bl" d="M346.0 171.9C340.3 168.0 337.6 164.9 334.8 159.1C330.6 150.5 331.8 141.0 338.4 129.8C343.6 121.1 344.1 117.9 342.0 105.7C340.0 93.9 338.2 89.7 333.7 87.0C328.5 83.8 323.2 84.4 313.9 89.2C299.7 96.6 292.4 104.7 286.0 120.2C281.9 130.2 278.6 134.7 271.6 139.5C251.6 153.2 222.9 144.6 215.1 122.6C208.2 103.0 215.8 83.3 233.7 74.5C241.7 70.6 252.4 70.0 263.4 72.9C278.5 76.9 288.0 75.3 306.6 65.9C320.3 58.9 325.2 55.4 329.7 49.5C334.9 42.5 344.3 39.3 351.4 42.0L354.0 43.0L354.0 109.0C354.0 183.6 354.7 177.8 346.0 171.9Z"/><path id="g-bp" d="M174.2 91.0C169.8 87.8 166.9 82.5 166.8 77.5C166.8 75.8 167.1 71.1 167.5 66.9C168.1 60.9 167.8 57.6 166.1 49.9C163.3 38.0 160.8 30.0 159.9 30.0C159.5 30.0 158.9 29.0 158.6 27.7C157.8 24.7 154.6 21.3 146.7 15.1C134.7 5.7 134.2 6.0 162.1 6.0L186.2 6.0L185.5 8.2C182.7 17.2 182.6 19.9 184.8 29.7C186.0 35.0 187.8 40.9 188.8 42.9C190.9 47.1 198.1 51.3 202.0 50.6C207.0 49.8 210.0 48.8 210.0 47.9C210.0 47.4 210.6 47.0 211.2 47.0C213.3 47.0 225.9 38.3 228.7 34.9C230.2 33.2 232.0 31.2 232.7 30.4C234.6 28.5 239.3 18.6 241.5 11.8L243.4 6.0L277.0 6.0L310.7 6.0L312.0 8.7C313.9 12.8 314.5 27.1 313.0 32.8C311.0 40.3 305.2 48.4 298.5 52.9C289.3 59.2 279.7 60.9 267.0 58.4C248.0 54.8 241.1 56.5 216.5 71.1C206.8 76.8 205.5 77.9 200.3 85.1C195.4 91.7 191.2 94.0 183.7 94.0C179.3 94.0 177.6 93.5 174.2 91.0ZM126.5 71.8C121.4 70.8 115.8 66.2 113.5 61.4C111.6 57.3 112.0 48.1 114.3 45.4C121.7 36.4 128.3 34.1 136.8 37.6C146.0 41.2 150.5 52.1 146.6 61.3C143.4 68.7 134.4 73.5 126.5 71.8Z"/></defs></svg>
+<header class="hero">
+  <svg class="blob" viewBox="100 0 254 180" aria-hidden="true"><use class="bl" href="#g-bl"/><use class="bp" href="#g-bp"/></svg>
+  <div class="hero-in">
+    <svg class="logo" viewBox="0 0 1232 514" role="img" aria-label="Sosped Keskus"><use href="#g-logo"/></svg>
+
+
+  <p class="eyebrow">POC v2 &middot; vaikuttavuussijoittaminen</p>
+  <h1>Vaikutuspulssi</h1>
+  <p class="tagline">Kolme näkökulmaa yksityisen pääoman potentiaaliin: miten hyöty osoitetaan julkishallinnolle ja finanssialalle, millaisilla rakenteilla pääomaa liikkeelle saadaan, ja miten markkinaa ohjataan kansallisella tasolla.</p>
+  </div>
+</header>
+<div class="wrap">
+
+  <div class="stats">
+    <div class="stat"><span class="n">11</span><span class="l">Lähdettä seurannassa</span></div>
+    <div class="stat"><span class="n">16</span><span class="l">Poimintaa</span></div>
+    <div class="stat"><span class="n">3</span><span class="l">Teemaa</span></div>
+    <div class="stat"><span class="n">5.10.2026</span><span class="l">Päivitetty</span></div>
+  </div>
+
+  <div class="filters" role="group" aria-label="Suodata teeman mukaan">
+    <button class="filter-btn" data-filter="all" aria-pressed="true">Kaikki (16)</button>
+    <button class="filter-btn" data-filter="econ" aria-pressed="false">Taloudellisen hyödyn mallinnus (4)</button>
+    <button class="filter-btn" data-filter="fin" aria-pressed="false">Uudet rahoitusmallit (7)</button>
+    <button class="filter-btn" data-filter="gov" aria-pressed="false">Ohjausrakenteet (5)</button>
+  </div>
+  <p class="filter-hint">Suodata alla oleva kooste yhteen teemaan, tai selaa kaikkia.</p>
+
+  <section data-theme="econ">
+    <div class="theme-head"><h2>Taloudellisen hyödyn mallinnus</h2><span class="theme-count">4 poimintaa</span></div>
+    <p class="section-note">Miten yksityisen pääoman ja rahoitusmallien hyöty tehdään näkyväksi ja vertailukelpoiseksi julkishallinnon ja finanssialan silmin.</p>
+
+    <article class="card">
+      <div class="card-top"><span>EIF &middot; Working paper</span><span class="date">Huhtikuu 2025</span></div>
+      <h3><a href="https://www.eif.org/files/publications/eif-working-paper-2025-103.pdf" target="_blank" rel="noopener">COSME-takausohjelman taloudellisten vaikutusten arviointi</a></h3>
+      <p>Kreikan, Puolan, Espanjan ja Romanian aineistolla tehty diff-in-diff- ja propensity-score-matching-analyysi osoittaa, että EIF:n takaamaa lainaa saaneet pk-yritykset kasvattivat liikevaihtoaan 10,8 ja työllisyyttään 9,2 prosenttiyksikköä enemmän kuin verrokit &ndash; ilman tuottavuushaittaa. Konkreettinen malli kausaalisen lisäarvon osoittamiseen julkiselle rahoittajalle.</p>
+      <div class="card-bottom"><span class="tag econ">Mallinnus</span><a class="read" href="https://www.eif.org/files/publications/eif-working-paper-2025-103.pdf" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>Den Sociale Kapitalfond &middot; Vuosiraportti</span><span class="date">26.5.2026</span></div>
+      <h3><a href="https://densocialekapitalfond.dk/en/social-impact-esg-report-2025/" target="_blank" rel="noopener">Social Impact &amp; ESG -raportti 2025</a></h3>
+      <p>Tanskalainen vaikuttavuusrahasto muuntaa salkkunsa vaikutuksen vuositason tunnusluvuksi: yli 10 000 tavoitettua ihmistä rahaston historian aikana ja arviolta 204 miljoonan Tanskan kruunun sosioekonomiset säästöt vuonna 2025 yksin.</p>
+      <div class="card-bottom"><span class="tag econ">Mallinnus</span><a class="read" href="https://densocialekapitalfond.dk/en/social-impact-esg-report-2025/" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>ImpactAlpha &middot; Analyysi</span><span class="date">3.4.2024</span></div>
+      <h3><a href="https://impactalpha.com/blending-billions-lessons-from-more-than-three-dozen-big-blended-finance-transactions/" target="_blank" rel="noopener">Blending Billions: opit yli kolmesta tusinasta suurkaupasta</a></h3>
+      <p>39 blended finance -kauppaa (86 mrd $): 87 % saavutti rahoituksellisen closingin, mutta vain 69 % vaikuttavuustavoitteensa &ndash; ja vain 23 %:lla oli ylipäätään SMART-muotoiltu tavoite. Muistutus siitä, että ilman yhtenäistä mittaristoa hyötyväite jää todistamatta.</p>
+      <div class="card-bottom"><span class="tag econ">Mallinnus</span><a class="read" href="https://impactalpha.com/blending-billions-lessons-from-more-than-three-dozen-big-blended-finance-transactions/" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>Acumen &middot; Menetelmä</span><span class="date">2026</span></div>
+      <h3><a href="https://acumen.org/impact/" target="_blank" rel="noopener">Lean Data: asiakastason todentaminen skaalattuna standardiksi</a></h3>
+      <p>Acumenin asiakaspalautteeseen perustuva Lean Data -menetelmä synnytti 60 Decibels-mittausyhtiön, joka on tehnyt asiakastason vaikutustiedon keräämisestä alan standardin. Yli puoli miljardia tavoitettua ihmistä &ndash; hyöty osoitetaan alhaalta ylös, ei vain salkkutasolla.</p>
+      <div class="card-bottom"><span class="tag econ">Mallinnus</span><a class="read" href="https://acumen.org/impact/" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+  </section>
+
+  <section data-theme="fin">
+    <div class="theme-head"><h2>Uudet rahoitusmallit</h2><span class="theme-count">7 poimintaa</span></div>
+    <p class="section-note">Rakenteita, jotka yhdistelevät pääomalajeja tai sitovat rahoituksen tulokseen.</p>
+
+    <div class="spectrum">
+      <p class="spectrum-label">Pääoman spektri &mdash; missä kohtaa nämä mallit toimivat</p>
+      <div class="bar"><span class="b1"></span><span class="b2"></span><span class="b3"></span><span class="b4"></span></div>
+      <div class="bar-labels"><span>Avustus</span><span>Konsessionaalinen</span><span>Katalyyttinen</span><span>Markkinaehtoinen</span></div>
+      <p class="spectrum-note">Suurin osa alla olevista malleista sijoittuu spektrin keskelle: ne yhdistävät eri ehdoin liikkeelle lähtevää pääomaa yhdeksi rakenteeksi sen sijaan että valitsisivat jomman kumman ääripään.</p>
+    </div>
+
+    <article class="card">
+      <div class="card-top"><span>Pioneers Post &middot; Uutiskirje</span><span class="date">24.9.2026</span></div>
+      <h3><a href="https://www.pioneerspost.com/news-views/20260924/the-impact-world-week-24-september-2026" target="_blank" rel="noopener">IDB Lab katalyyttinen sijoitus Amazonin alueen vaikuttavuusrahastoon</a></h3>
+      <p>Amerikan kehityspankin IDB Lab sijoitti miljoona dollaria katalyyttisenä pääomana Amazonia Impact Venturesin sekoitetun rahoituksen (blended finance) lainarahastoon, jota AIV täydensi 1,26 miljoonalla dollarilla. Rahasto mahdollistaa noin 24 vaikuttavuussidonnaista lainaa alkuperäiskansojen yrityksille ja osuuskunnille Perussa, Ecuadorissa ja Kolumbiassa kolmen vuoden aikana.</p>
+      <div class="card-bottom"><span class="tag fin">Rahoitusmalli</span><a class="read" href="https://www.pioneerspost.com/news-views/20260924/the-impact-world-week-24-september-2026" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>TransCap Initiative &middot; Working paper</span><span class="date">16.9.2026</span></div>
+      <h3><a href="https://transformation.capital/assets/uploads/whitepapers/TCI_Integrated_Capital_Strategies_160926_FINAL.pdf" target="_blank" rel="noopener">Integroidut pääomastrategiat: säätiöiden koko pääoma systeemisen muutoksen ajuriksi</a></h3>
+      <p>Lähes 30 hengen käytäntöyhteisö yhdysvaltalaisia säätiöiden sijoitus- ja ohjelmavastaavia esittää, miten avustukset, PRI:t ja MRI:t voisi koordinoida yhdeksi työkalupakiksi &rdquo;pääoman orkestroijien&rdquo; kautta. Alle 2 % yli 125 000:sta yhdysvaltalaisesta säätiöstä tekee säännöllisesti PRI-sijoituksia &ndash; raportin mukaan esteet ovat ennen kaikkea kulttuurisia ja osaamiseen liittyviä, ei sääntelyä, ja ratkaisuksi ehdotetaan uutta &rdquo;Capital Integrator&rdquo;-roolia.</p>
+      <div class="card-bottom"><span class="tag fin">Rahoitusmalli</span><a class="read" href="https://transformation.capital/assets/uploads/whitepapers/TCI_Integrated_Capital_Strategies_160926_FINAL.pdf" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>ImpactAlpha &middot; Analyysi</span><span class="date">15.9.2026</span></div>
+      <h3><a href="https://impactalpha.com/european-impact-vc-successfully-goes-off-the-beaten-track/" target="_blank" rel="noopener">ECIIF II: 21 miljoonan euron ensimmäinen sulkeminen EU-takauksella</a></h3>
+      <p>Eurooppalainen katalyyttinen vaikuttavuusrahasto ECIIF II keräsi ensimmäisessä sulkemisessaan 21 miljoonaa euroa, joista 10 miljoonaa euroa on Euroopan investointirahaston InvestEU-takausta ensimmäisenä tappioita imevänä kerroksena. Takaus mahdollistaa pitkäjänteisen, ei-exit-vetoisen sijoittamisen esimerkiksi osuuskuntiin ja &rdquo;steward-owned&rdquo; -yrityksiin, joita perinteinen pääomasijoittaminen ei tyypillisesti tavoita.</p>
+      <div class="card-bottom"><span class="tag fin">Rahoitusmalli</span><a class="read" href="https://impactalpha.com/european-impact-vc-successfully-goes-off-the-beaten-track/" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>Catalytic Capital Consortium (C3) &middot; Analyysi</span><span class="date">11.9.2026</span></div>
+      <h3><a href="https://catalyticcapitalconsortium.org/fostering-solutions-and-infrastructure-for-catalytic-capital/" target="_blank" rel="noopener">Katalyyttisen pääoman infrastruktuuri: viisi opittua asiaa</a></h3>
+      <p>Harvey Kohin katsaus C3:n rahoittamiin innovaatioihin tiivistää, miten katalyyttistä pääomaa saadaan virtaamaan alipalvelluille markkinoille: kysyntälähtöinen ymmärrys, tasa-arvonäkökulma ja kumppanuudet rahoituslaitosten ja valtion virastojen kanssa. Esimerkkeinä muun muassa Invest Appalachian salkku (86 % hankkeista maaseutu- tai taantuvilla alueilla) ja Sambian NABII-ohjelman 175 miljoonan dollarin luottotakausjärjestely.</p>
+      <div class="card-bottom"><span class="tag fin">Rahoitusmalli</span><a class="read" href="https://catalyticcapitalconsortium.org/fostering-solutions-and-infrastructure-for-catalytic-capital/" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>GO Lab &middot; Analyysi</span><span class="date">3.9.2026</span></div>
+      <h3><a href="https://golab.bsg.ox.ac.uk/community/news/highlights-from-day-1-of-soc26/" target="_blank" rel="noopener">Social Outcomes Conference 2026: tulosperusteisuus vaatii luottamusta ja liikkumavaraa</a></h3>
+      <p>SOC26-konferenssin avauspäivä kokosi tutkijoita, päättäjiä ja käytännön toimijoita pohtimaan, miten tulosperusteiset sopimukset toimivat julkisissa palveluissa. Puheenvuoroissa korostettiin suhdeperustaista kumppanuutta muodollisten ehtojen rinnalla ja palvelunkäyttäjien äänen huomioimista, ja kahdeksan maaesimerkkiä Walesista Etiopiaan ja Intiaan päätyi samaan johtopäätökseen: pelkkä mitatun tavoitteen saavuttaminen ei riitä, jos se ohittaa tarkoituksen.</p>
+      <div class="card-bottom"><span class="tag fin">Rahoitusmalli</span><a class="read" href="https://golab.bsg.ox.ac.uk/community/news/highlights-from-day-1-of-soc26/" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>Pioneers Post &middot; Uutiskirje</span><span class="date">29.7.2026</span></div>
+      <h3><a href="https://www.pioneerspost.com/news-views/20260729/impact-finance-bulletin-pursuing-impact-first-investing-doesn-t-mean-shunning" target="_blank" rel="noopener">Impact Finance Bulletin: koko pääoman spektri käyttöön</a></h3>
+      <p>Markus Freiburg (FASE) argumentoi, että vaikuttavuus syntyy hyödyntämällä koko pääoman spektriä avustuksista markkinaehtoiseen sijoittamiseen &ndash; ei valitsemalla jompaakumpaa ääripäätä.</p>
+      <div class="card-bottom"><span class="tag fin">Rahoitusmalli</span><a class="read" href="https://www.pioneerspost.com/news-views/20260729/impact-finance-bulletin-pursuing-impact-first-investing-doesn-t-mean-shunning" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>TransCap Initiative &middot; Raportti</span><span class="date">Helmikuu 2026</span></div>
+      <h3><a href="https://transformation.capital/assets/uploads/downloadfiles/RACO-Midwest_summary-report_FINAL-Feb-2026.pdf" target="_blank" rel="noopener">Regeneratiivisen maatalouden rahoitusinfrastruktuuri, Midwest</a></h3>
+      <p>20 johtavaa sijoittajaa, rahoittajaa ja maatalousjärjestöä suunnitteli yhdessä &rdquo;pääoman orkestroijan&rdquo; -rakenteen, joka kokoaa hajanaisen rahoituksen yhdeksi reitiksi regeneratiivisen viljelyn skaalaamiseen.</p>
+      <div class="card-bottom"><span class="tag fin">Rahoitusmalli</span><a class="read" href="https://transformation.capital/assets/uploads/downloadfiles/RACO-Midwest_summary-report_FINAL-Feb-2026.pdf" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+  </section>
+
+  <section data-theme="gov">
+    <div class="theme-head"><h2>Ohjausrakenteet</h2><span class="theme-count">5 poimintaa</span></div>
+    <p class="section-note">Kansallisen ja ylikansallisen tason rakenteita, jotka ohjaavat ja kokoavat vaikuttavuussijoittamisen markkinaa &ndash; vertailukohtana Alankomaiden NAB. Teema on vielä muita ohuempi, mutta kasvoi tällä kierroksella kahdella uudella poiminnalla.</p>
+
+    <article class="card">
+      <div class="card-top"><span>Pioneers Post &middot; Uutiskirje</span><span class="date">2.10.2026</span></div>
+      <h3><a href="https://www.pioneerspost.com/news-views/20261002/the-impact-world-week-2-october-2026" target="_blank" rel="noopener">GSG Impact -verkosto laajeni: Vietnam 44. kansalliseksi kumppaniksi</a></h3>
+      <p>Vietnam liittyi GSG Impactin kansallisten kumppanien verkostoon 44:ntenä maana, mikä kasvattaa verkoston kattavuuden 49 maahan &ndash; niistä 13 Aasian ja Tyynenmeren alueella. Jokainen kansallinen kumppani on maansa vaikuttavuussijoittamisen kehitystä vetävä elin, joten laajentuminen vahvistaa mallia kansallisten ohjausrakenteiden kytkemisestä yhteiseen globaaliin verkostoon.</p>
+      <div class="card-bottom"><span class="tag gov">Ohjausrakenne</span><a class="read" href="https://www.pioneerspost.com/news-views/20261002/the-impact-world-week-2-october-2026" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>Pioneers Post &middot; Uutiskirje</span><span class="date">24.9.2026</span></div>
+      <h3><a href="https://www.pioneerspost.com/news-views/20260924/the-impact-world-week-24-september-2026" target="_blank" rel="noopener">EU-tason selvitys ehdottaa yhteistä määritelmää vaikuttavuusyrityksille</a></h3>
+      <p>EU-komission DG GROW -pääosaston tilaama selvitys peräänkuuluttaa &rdquo;impact-driven business&rdquo; -yritysten selkeämpää tunnistamista koko Euroopassa: ehdotuksena on ei-sitova EU-laajuinen määritelmä ja tiedonvaihtoalusta, joilla puututtaisiin jäsenmaiden hajanaiseen sääntely-ympäristöön. Kaksi kolmasosaa kyselyyn vastanneista sidosryhmistä kannatti EU-tason merkintää tai statusta alalle.</p>
+      <div class="card-bottom"><span class="tag gov">Ohjausrakenne</span><a class="read" href="https://www.pioneerspost.com/news-views/20260924/the-impact-world-week-24-september-2026" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>Pioneers Post &middot; Uutiskirje</span><span class="date">18.9.2026</span></div>
+      <h3><a href="https://www.pioneerspost.com/news-views/20260918/the-impact-world-week-18-september-2026" target="_blank" rel="noopener">Iso-Britannia jakoi vaikuttavuustalouden ohjauksen kahden ministerin kesken</a></h3>
+      <p>Britannian hallitus jakoi kansalaisyhteiskunnan ja vaikuttavuustalouden ohjausvastuun kahdelle ministerille: Vicky Foxcroft vastaa nyt kansalaisyhteiskunnasta, kun taas Stephanie Peacock säilyttää &rdquo;Office for the Impact Economy&rdquo; -salkun urheilu- ja matkailuvastuiden rinnalla. Järjestely seuraa toimiston heinäkuista siirtoa valtiovarainministeriön kansliasta kulttuuriministeriöön, mikä oli herättänyt huolta vaikuttavuustalouden painoarvon laskusta hallinnossa.</p>
+      <div class="card-bottom"><span class="tag gov">Ohjausrakenne</span><a class="read" href="https://www.pioneerspost.com/news-views/20260918/the-impact-world-week-18-september-2026" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>NAB Impact Investing &middot; Alankomaat</span><span class="date">Ohjausrakenne, 2026</span></div>
+      <h3><a href="https://www.nabimpactinvesting.nl/" target="_blank" rel="noopener">NAB: kansallinen ohjausrakenne vaikuttavuusmarkkinalle</a></h3>
+      <p>Haagiin sijoittuva NAB kokoaa hallituksen, tiimin ja ANBI-hyväntekeväisyysaseman taakse tehtävän kasvattaa ja tehostaa Alankomaiden vaikuttavuussijoittamisen markkinaa. Käynnissä oleva &rdquo;State of the Sector 2026&rdquo; -kysely tuottaa ekosysteemitason tilannekuvan; oma uutiskirje ja julkaisusarja tukevat toimintaa.</p>
+      <div class="card-bottom"><span class="tag gov">Ohjausrakenne</span><a class="read" href="https://www.nabimpactinvesting.nl/newsletter" target="_blank" rel="noopener">Uutiskirje &rarr;</a></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span>GSG Impact &middot; Verkosto</span><span class="date">50+ maata, 2026</span></div>
+      <h3><a href="https://www.gsgimpact.org/partners/national-partners/" target="_blank" rel="noopener">Kansalliset kumppanit: entisten National Advisory Boardien verkosto</a></h3>
+      <p>GSG Impact kokoaa yli 50 maan kansalliset kumppanit &ndash; kussakin maassa vaikuttavuussijoittamisen kehitystä vetävän elimen &ndash; yhteiseksi rakenteeksi, joka jakaa oppia ja ajaa politiikkaa globaalisti. Malli siitä, miten kansallinen ohjausrakenne voi kytkeytyä kansainväliseen verkostoon.</p>
+      <div class="card-bottom"><span class="tag gov">Ohjausrakenne</span><a class="read" href="https://www.gsgimpact.org/partners/national-partners/" target="_blank" rel="noopener">Lue lähteestä &rarr;</a></div>
+    </article>
+  </section>
+
+  <footer>
+    <p class="proto-note flag"><strong>Tarkistettavaa:</strong> en pystynyt tunnistamaan varmasti tahoa &rdquo;BMMP Investments&rdquo; &ndash; haku ei löytänyt tällä nimellä tunnettua vaikuttavuussijoittajaa tai -rahastoa. Jos annat linkin tai tarkemman nimen, lisään sen seuraavaan versioon.</p>
+
+    <h2 style="border:none; padding:0; margin-bottom:6px;">Seurannassa</h2>
+    <p class="section-note">11 lähdettä tässä versiossa. Kerro, mitä lisäisit tai poistaisit.</p>
+    <div class="sources">
+      <div class="source-item"><a href="https://impactalpha.com" target="_blank" rel="noopener">ImpactAlpha</a><span class="d">Vaikuttavuussijoittamisen uutispalvelu</span></div>
+      <div class="source-item"><a href="https://transformation.capital" target="_blank" rel="noopener">TransCap Initiative</a><span class="d">Systeeminen &rdquo;transformaatiopääoma&rdquo;</span></div>
+      <div class="source-item"><a href="https://golab.bsg.ox.ac.uk" target="_blank" rel="noopener">GO Lab, Oxford</a><span class="d">Tulosperusteinen rahoitus, tutkimus</span></div>
+      <div class="source-item"><a href="https://www.pioneerspost.com" target="_blank" rel="noopener">Pioneers Post</a><span class="d">Yhteiskunnallisen yrittäjyyden media</span></div>
+      <div class="source-item"><a href="https://www.socialvalueint.org" target="_blank" rel="noopener">Social Value International</a><span class="d">SROI-standardi (referenssi, ei tässä koosteessa)</span></div>
+      <div class="source-item"><a href="https://densocialekapitalfond.dk/en" target="_blank" rel="noopener">Den Sociale Kapitalfond</a><span class="d">Tanskalainen vaikuttavuusrahasto</span></div>
+      <div class="source-item"><a href="https://catalyticcapitalconsortium.org" target="_blank" rel="noopener">Catalytic Capital Consortium (C3)</a><span class="d">Katalyyttisen pääoman aloite</span></div>
+      <div class="source-item"><a href="https://acumen.org" target="_blank" rel="noopener">Acumen</a><span class="d">Lean Data &ndash; asiakastason vaikutusmittaus</span></div>
+      <div class="source-item"><a href="https://www.eif.org" target="_blank" rel="noopener">European Investment Fund (EIF)</a><span class="d">Takaukset, working paperit, talousvaikutukset</span></div>
+      <div class="source-item"><a href="https://www.gsgimpact.org" target="_blank" rel="noopener">GSG Impact</a><span class="d">Kansallisten kumppaneiden verkosto</span></div>
+      <div class="source-item"><a href="https://www.nabimpactinvesting.nl" target="_blank" rel="noopener">NAB Impact Investing (NL)</a><span class="d">Alankomaiden kansallinen ohjausrakenne</span></div>
+    </div>
+    <p class="proto-note">Tämä on käsin koottu POC yhdeltä hakukierrokselta &ndash; mukana on nyt myös uutiskirjeluonteisia poimintoja (Pioneers Post, NAB). Tuotantoversiossa agentit seuraisivat näitä lähteitä (ja niiden uutiskirjeitä) ajastetulla tehtävällä, luokittelisivat uudet jutut samaan kolmeen teemaan ja päivittäisivät tämän sivun automaattisesti.</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var buttons = document.querySelectorAll('.filter-btn');
+  var sections = document.querySelectorAll('section[data-theme]');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var f = btn.getAttribute('data-filter');
+      buttons.forEach(function(b){ b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+      sections.forEach(function(s){
+        s.hidden = !(f === 'all' || s.getAttribute('data-theme') === f);
+      });
+    });
+  });
+})();
+</script>
+
+
+</body>
+</html>
